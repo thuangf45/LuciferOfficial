@@ -32,7 +32,7 @@ dotnet tool install --global Lucifer.CLI
 For a specific version:
 
 ```bash
-dotnet tool install --global Lucifer.CLI --version 1.0.3
+dotnet tool install --global Lucifer.CLI --version 1.0.5
 ```
 
 This makes CLI commands more convenient to use from any directory.
