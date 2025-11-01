@@ -19,7 +19,7 @@ namespace Yourspace.Server
 
         private static SslContext CreateSslContext()
         {
-            string certPath = EnvHelper.Get("CERTIFICATE", "extra_files/tools/certificates/server.pfx");
+            string certPath = EnvHelper.Get("CERTIFICATE", "assets/tools/certificates/server.pfx");
             string password = EnvHelper.Get("CERT_PASSWORD", "qwerty");
 
             return new SslContext(SslProtocols.Tls13, new X509Certificate2(certPath, password));
@@ -27,7 +27,7 @@ namespace Yourspace.Server
 
         private static int GetPortFromEnv() => int.Parse(EnvHelper.Get("PORT", "2000"));
 
-        private void AddStaticContent() => AddStaticContent(EnvHelper.Get("WWW", "extra_files/FE/pub"));
+        private void AddStaticContent() => AddStaticContent(EnvHelper.Get("WWW", "assets/client"));
 
     }
 
