@@ -123,22 +123,6 @@ Find the latest releases and documentation on [NuGet.org](https://www.nuget.org/
 ## Contributing
 We welcome contributions! Please fork the repository, make your changes, and submit a pull request. For collaboration opportunities, contact the author directly.
 
-## License
-
-**Copyright © 2025 Nguyễn Minh Thuận**
-
-This source code is proprietary and confidential. All rights reserved.
-
-Unauthorized use, reproduction, modification, distribution, or disclosure of this code, in whole or in part, is strictly prohibited without prior written consent from the author.
-
-To request permission for use, reproduction, modification, or distribution, please contact the author via:
-
-- **GitHub:** [thuangf45](https://github.com/thuangf45)
-
-By accessing, viewing, or using this repository, you acknowledge and agree to these terms and conditions. No implied licenses are granted.
-
-For inquiries or collaboration opportunities, feel free to open an issue on the repository or reach out directly.
-
 ## Acknowledgments
 Thank you to everyone who has contributed to LuciferCore and made this project possible. Your support means the world!
 
