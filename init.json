@@ -1,0 +1,5 @@
+{
+  "config/.env": "config/.env",
+  "FE/index.html": "client/index.html",
+  "tools/certificates/server.pfx": "tools/certificates/server.pfx"
+}
