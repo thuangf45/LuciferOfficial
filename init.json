@@ -1,5 +1,5 @@
 {
   "config/.env": "config/.env",
-  "/index.html": "client/index.html",
+  "client/index.html": "client/index.html",
   "tools/certificates/server.pfx": "tools/certificates/server.pfx"
 }
