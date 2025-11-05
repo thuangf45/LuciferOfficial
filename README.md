@@ -59,8 +59,8 @@ lucifer create <template-name>
 
 Examples of commonly used templates:
 - `lucifer create Handler` – Creates a handler template.
-- `lucifer create Server` – Sets up a server configuration.
-- `lucifer create Session` – Initializes session management files.
+- `lucifer create HttpsServer` – Sets up a server configuration.
+- `lucifer create HttpsSession` – Initializes session management files.
 
 Explore more templates based on your needs.
 
