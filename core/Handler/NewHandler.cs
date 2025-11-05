@@ -4,7 +4,7 @@ using LuciferCore.NetCoreServer;
 
 namespace Yourspace.Handler
 {
-    internal class NewHandler : HandlerBase
+    internal class NewHandler : HttpsHandlerBase
     {
         public override string Type => "/yourapi";
 

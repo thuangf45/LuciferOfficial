@@ -1,25 +1,17 @@
-﻿using LuciferCore.Manager.Log;
+﻿using LuciferCore.Event;
+using LuciferCore.Manager.Log;
 using LuciferCore.NetCoreServer;
 using System.Net.Sockets;
-using System.Text;
 using static LuciferCore.Core.Simulation;
 
 namespace Yourspace.Session
 {
-    public partial class NewWssSession
+    public partial class NewWssSession : WssSession
     {
+        // Trong NewWssSession.cs
         public override void OnWsReceived(byte[] buffer, long offset, long size)
-        {
-            string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            GetModel<LogManager>().Log("Incoming: " + message);
+            =>  EventDispatcher.Handle(this, buffer, offset, size);
 
-            // Multicast message to all connected sessions
-            ((WssServer)Server).MulticastText(message);
-
-            // If the buffer starts with '!' the disconnect the current session
-            if (message == "!")
-                Close(1000);
-        }
         protected override void OnReceivedRequestInternal(HttpRequest request)
         {
             if (request.Method == "GET" && !IsWebSocket)

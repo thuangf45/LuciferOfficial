@@ -1,7 +1,4 @@
 ﻿using LuciferCore.NetCoreServer;
-using System.Net.Sockets;
-using System.Net.WebSockets;
-using System.Text;
 
 namespace Yourspace.Session
 {
@@ -13,7 +10,7 @@ namespace Yourspace.Session
             // Ẩn URL cho handshake
             Mapping = new Dictionary<string, string>()
             {
-                { "/", "/index.html" },      // Map ẩn URL chính
+                { "/", "/test.html" },      // Map ẩn URL chính
                 { "/404", "/404.html" }      // ← FIX: Thêm 404 để tránh KeyNotFound
                 // Thêm nếu cần: { "/tool", "/tool.html" }
             };
