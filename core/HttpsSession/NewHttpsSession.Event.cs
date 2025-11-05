@@ -2,16 +2,29 @@
 using LuciferCore.Manager.Log;
 using LuciferCore.NetCoreServer;
 using System.Net.Sockets;
-using Yourspace.Server;
 using static LuciferCore.Core.Simulation;
 
 namespace Yourspace.Session
 {
-    public partial class WebSession
+    public partial class NewHttpsSession
     {
+        protected override void OnReceivedRequestInternal(HttpRequest request)
+        {
+            if (request.Method == "GET")
+            {
+                var staticPath = GetStaticPath(request);
+                if (!string.IsNullOrEmpty(staticPath) && Cache.Find(staticPath) is var response && response.Item1)
+                {
+                    OnReceivedCachedRequest(request, response.Item2);
+                    return;
+                }
+            }
+
+            OnReceivedRequest(request);
+        }
+
         protected override void OnReceivedRequest(HttpRequest request)
         {
-            GetModel<WebServer>().UpdateNumberRequest();
             EventDispatcher.Handle(request, this);
         }
 
@@ -20,4 +33,6 @@ namespace Yourspace.Session
 
         protected override void OnError(SocketError error){}
     }
+
+
 }
