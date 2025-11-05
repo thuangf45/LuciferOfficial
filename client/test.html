@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket chat client example</title>
+    <link rel="icon" type="image/png" href="./favicon.png" />
+</head>
+<body>
+    <script>
+        let websocket = null;
+        let connectTimeout = null; // Check hang
+
+        function init() {
+            // ← FIX: Dynamic WS URL + path để tránh static conflict
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const dynamicUrl = `${protocol}//${host}`;
+
+            document.myform.url.value = dynamicUrl;
+            console.log('Dynamic WS URL:', dynamicUrl); // F12 check
+
+            document.myform.inputtext.value = "Hello World!";
+            document.myform.disconnectButton.disabled = true;
+            document.myform.sendButton.disabled = true;
+            document.myform.outputtext.value = "";
+        }
+
+        function doConnect() {
+            if (websocket && websocket.readyState !== WebSocket.CLOSED) {
+                writeToScreen("Closing old...\n");
+                websocket.close(1000, "Reconnecting");
+                return;
+            }
+            websocket = new WebSocket(document.myform.url.value);
+
+            // ← THÊM: Timeout 10s check hang
+            connectTimeout = setTimeout(() => {
+                if (websocket.readyState === WebSocket.CONNECTING) {
+                    writeToScreen("Connect timeout – Check path/server!\n");
+                    console.error('WS Hang: Still connecting after 10s – Path mismatch?');
+                    if (websocket) websocket.close(1006, "Timeout");
+                }
+            }, 10000);
+
+            websocket.onopen = function (evt) {
+                clearTimeout(connectTimeout);
+                onOpen(evt);
+            };
+            websocket.onclose = function (evt) {
+                clearTimeout(connectTimeout);
+                onClose(evt);
+            };
+            websocket.onmessage = function (evt) { onMessage(evt); };
+            websocket.onerror = function (evt) {
+                clearTimeout(connectTimeout);
+                onError(evt);
+            };
+
+            writeToScreen("Connecting to: " + document.myform.url.value + "\n");
+        }
+
+        function onOpen(evt) {
+            writeToScreen("connected\n");
+            document.myform.connectButton.disabled = true;
+            document.myform.disconnectButton.disabled = false;
+            document.myform.sendButton.disabled = false;
+        }
+
+        function onClose(evt) {
+            writeToScreen(`disconnected (Code: ${evt.code || 'unknown'}, Reason: ${evt.reason || 'no reason'})\n`);
+            document.myform.connectButton.disabled = false;
+            document.myform.disconnectButton.disabled = true;
+            document.myform.sendButton.disabled = true;
+            websocket = null;
+        }
+
+        function onMessage(evt) {
+            writeToScreen("response: " + evt.data + '\n');
+        }
+
+        function onError(evt) {
+            let errMsg = evt.message || 'Unknown WS error (check console)';
+            writeToScreen(`error: ${errMsg}\n`);
+            console.error('WS Error details:', evt);
+            if (websocket) websocket.close(1011, "Internal error");
+        }
+
+        function doSend(message) {
+            if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+                writeToScreen("Not connected – Connect first!\n");
+                return;
+            }
+            writeToScreen("sent: " + message + '\n');
+            websocket.send(message);
+            document.myform.inputtext.value = "";
+        }
+
+        function writeToScreen(message) {
+            document.myform.outputtext.value += message;
+            document.myform.outputtext.scrollTop = document.myform.outputtext.scrollHeight;
+        }
+
+        window.addEventListener("load", init, false);
+
+        function sendText() {
+            let message = document.myform.inputtext.value.trim();
+            if (message) doSend(message);
+        }
+
+        function clearText() {
+            document.myform.outputtext.value = "";
+        }
+
+        function doDisconnect() {
+            if (websocket && websocket.readyState === WebSocket.OPEN) {
+                websocket.send("!"); // Trigger server close
+            } else {
+                writeToScreen("Not connected.\n");
+            }
+        }
+    </script>
+    <form name="myform">
+        <p>
+            <textarea name="url" cols="50" rows="1" placeholder="Dynamic WS URL set here"></textarea>
+        </p>
+        <p>
+            <input type="button" name="connectButton" value="Connect" onClick="doConnect()">
+            <input type="button" name="disconnectButton" value="Disconnect" onClick="doDisconnect()">
+        </p>
+        <p>
+            <textarea name="outputtext" cols="50" rows="20" readonly></textarea>
+        </p>
+        <p>
+            <textarea name="inputtext" cols="50" rows="1" placeholder="Type message..."></textarea>
+        </p>
+        <p>
+            <input type="button" name="sendButton" value="Send" onClick="sendText()" disabled>
+            <input type="button" name="clearButton" value="Clear" onClick="clearText()">
+        </p>
+    </form>
+</body>
+</html>
