@@ -10,12 +10,13 @@ namespace Yourspace.Handler
 {
     internal class NewWssHandler : WssHandlerBase
     {
-        public override string Type => "/yourtype";
+        public override string Type => "/wss";
+
         [WsMessage("SendChat")]
         public void Send([Packet] WsPacketModel data, NewWssSession session)
         {
             string msg = Encoding.UTF8.GetString(data.Body);
-            GetModel<LogManager>().Log($"Guest: {msg}");
+            GetModel<LogManager>().LogSystem(this, $"Guest: {msg}");
             ((NewWssServer)session.Server).MulticastText(msg);
         }
     }

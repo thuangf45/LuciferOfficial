@@ -6,8 +6,8 @@ namespace Yourspace.Server
 {
     public partial class NewWssServer
     {
-        protected override void OnError(SocketError error) => GetModel<LogManager>().LogSystem($"Chat WebSocket server caught an error with code {error}", LogLevel.ERROR);
-        protected override void OnStarted() => GetModel<LogManager>().LogSystem("Server started!");
-        protected override void OnStopped() => GetModel<LogManager>().LogSystem("Server stopped!");
+        protected override void OnError(SocketError error) => GetModel<LogManager>().LogSystem(this, $"Chat WebSocket server caught an error with code {error}", LogLevel.ERROR);
+        protected override void OnStarted() => GetModel<LogManager>().LogSystem(this, "Started!");
+        protected override void OnStopped() => GetModel<LogManager>().LogSystem(this, "Stopped!");
     }
 }

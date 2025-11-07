@@ -6,8 +6,8 @@ namespace Yourspace.Server
 {
     public partial class NewHttpsServer
     {
-        protected override void OnError(SocketError error) => GetModel<LogManager>().LogSystem($"HTTPS server caught an error: {error}", LogLevel.ERROR);
-        protected override void OnStarted() => GetModel<LogManager>().LogSystem("Server started!");
-        protected override void OnStopped() => GetModel<LogManager>().LogSystem("Server stopped!");
+        protected override void OnError(SocketError error) => GetModel<LogManager>().LogSystem(this, $"HTTPS server caught an error: {error}", LogLevel.ERROR);
+        protected override void OnStarted() => GetModel<LogManager>().LogSystem(this, "Started!");
+        protected override void OnStopped() => GetModel<LogManager>().LogSystem(this, "Stopped!");
     }
 }

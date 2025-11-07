@@ -32,7 +32,7 @@ namespace Yourspace.Session
         
 
         public override void OnWsDisconnected() 
-            => GetModel<LogManager>().Log($"Chat WebSocket session with Id {Id} disconnected!");
+            => GetModel<LogManager>().LogSystem(this, $"Chat WebSocket session with Id {Id} disconnected!");
 
         protected override void OnError(SocketError error) { }
     }

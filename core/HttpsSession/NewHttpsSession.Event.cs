@@ -29,7 +29,7 @@ namespace Yourspace.Session
         }
 
         protected override void OnReceivedRequestError(HttpRequest request, string error)    
-            => GetModel<LogManager>().Log($"Request error: {error}", LogLevel.ERROR, LogSource.SYSTEM);
+            => GetModel<LogManager>().LogSystem(this,$"Request error: {error}", LogLevel.ERROR);
 
         protected override void OnError(SocketError error){}
     }
