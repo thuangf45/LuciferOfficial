@@ -17,7 +17,7 @@ dotnet add package LuciferCore
 For a specific version (e.g., for server fine-tuning):
 
 ```bash
-dotnet add package LuciferCore --version 1.0.5
+dotnet add package LuciferCore --version 1.0.9
 ```
 
 After installation, run `dotnet restore` to ensure all dependencies are loaded properly.
@@ -32,7 +32,7 @@ dotnet tool install --global Lucifer.CLI
 For a specific version:
 
 ```bash
-dotnet tool install --global Lucifer.CLI --version 1.0.8
+dotnet tool install --global Lucifer.CLI --version 1.0.8.3
 ```
 
 This makes CLI commands more convenient to use from any directory.
