@@ -1,21 +1,36 @@
 ﻿using LuciferCore.NetCoreServer;
+using System.Collections.Concurrent;
 
 namespace Yourspace.Session
 {
     public partial class NewWssSession : WssSession
     {
-        protected Dictionary<string, string> Mapping { get; }
-        public NewWssSession(WssServer server) : base(server)
+        public HashSet<NewWssSession> GetGroup(string groupId)
         {
-            // Ẩn URL cho handshake
-            Mapping = new Dictionary<string, string>()
-            {
-                { "/", "/test.html" },      // Map ẩn URL chính
-                { "/404", "/404.html" }      // ← FIX: Thêm 404 để tránh KeyNotFound
-                // Thêm nếu cần: { "/tool", "/tool.html" }
-            };
+            if (groupId != null && Groups.TryGetValue(groupId, out var group))
+                return group;
+
+            return null; // group chưa tồn tại
         }
 
+        public HashSet<NewWssSession> AddGroup(string groupId)
+        {
+            // Sử dụng GetOrAdd để đảm bảo thread-safe
+            return Groups.GetOrAdd(groupId, _ => new HashSet<NewWssSession>());
+        }
+
+        public void RemoveFromGroup(string groupId, NewWssSession session)
+        {
+            if (Groups.TryGetValue(groupId, out var group))
+            {
+                lock (group)
+                {
+                    group.Remove(session);
+                    if (group.Count == 0)
+                        Groups.TryRemove(groupId, out _);
+                }
+            }
+        }
 
         protected virtual string GetStaticPath(HttpRequest request)
         {
