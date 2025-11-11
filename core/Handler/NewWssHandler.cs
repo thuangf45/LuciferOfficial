@@ -5,6 +5,7 @@ using System.Text;
 using Yourspace.Server;
 using Yourspace.Session;
 using static LuciferCore.Core.Simulation;
+using LuciferCore.Extensions;
 
 namespace Yourspace.Handler
 {
@@ -12,12 +13,16 @@ namespace Yourspace.Handler
     {
         public override string Type => "/wss";
 
-        [WsMessage("SendChat")]
-        public void Send([Packet] WsPacketModel data, NewWssSession session)
+        [WsMessage("ChatMessage")]
+        [Safe]
+        [RateLimiter(10,1)]
+        public void SendChat([Session] NewWssSession session, [Data] WsPacketModel data)
         {
-            string msg = Encoding.UTF8.GetString(data.Body);
+            string msg = Encoding.UTF8.GetString(data.Body.Span);
             GetModel<LogManager>().LogSystem(this, $"Guest: {msg}");
-            ((NewWssServer)session.Server).MulticastText(msg);
+
+            session.Multicast(data, session.GetGroup(data.Header.To));
         }
+
     }
 }
