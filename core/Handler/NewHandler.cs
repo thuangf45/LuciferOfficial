@@ -1,5 +1,6 @@
 using LuciferCore.Attributes;
 using LuciferCore.Handler;
+using LuciferCore.Manager.Session;
 using LuciferCore.NetCoreServer;
 
 namespace Yourspace.Handler
@@ -8,43 +9,65 @@ namespace Yourspace.Handler
     {
         public override string Type => "/yourapi";
 
+        [Safe]
+        [Authorize(UserRole.Guest)]
+        [RateLimiter(100, 1)]
         [HttpHead("")]
-        protected override void HeadHandle(HttpRequest request, HttpsSession session)
+        protected override void HeadHandle([Data] HttpRequest request, [Session] HttpsSession session)
         {
             OkHandle(session, "API is working!");
         }
 
+        [Safe]
+        [Authorize(UserRole.Guest)]
+        [RateLimiter(100, 1)]
         [HttpGet("")]
-        protected override void GetHandle(HttpRequest request, HttpsSession session)
+        protected override void GetHandle([Data] HttpRequest request, [Session] HttpsSession session)
         {
             OkHandle(session, "API is working!");
         }
 
+        [Safe]
+        [Authorize(UserRole.Guest)]
+        [RateLimiter(100, 1)]
         [HttpPost("")]
-        protected override void PostHandle(HttpRequest request, HttpsSession session)
+        protected override void PostHandle([Data] HttpRequest request, [Session] HttpsSession session)
         {
             OkHandle(session, "API is working!");
         }
+
+        [Safe]
+        [Authorize(UserRole.Guest)]
+        [RateLimiter(100, 1)]
         [HttpPut("")]
-        protected override void PutHandle(HttpRequest request, HttpsSession session)
+        protected override void PutHandle([Data] HttpRequest request, [Session] HttpsSession session)
         {
             OkHandle(session, "API is working!");
         }
 
+        [Safe]
+        [Authorize(UserRole.Guest)]
+        [RateLimiter(100, 1)]
         [HttpDelete("")]
-        protected override void DeleteHandle(HttpRequest request, HttpsSession session)
+        protected override void DeleteHandle([Data] HttpRequest request, [Session] HttpsSession session)
         {
             OkHandle(session, "API is working!");
         }
 
+        [Safe]
+        [Authorize(UserRole.Guest)]
+        [RateLimiter(100, 1)]
         [HttpTrace("")]
-        protected override void TraceHandle(HttpRequest request, HttpsSession session)
+        protected override void TraceHandle([Data] HttpRequest request, [Session] HttpsSession session)
         {
             OkHandle(session, "API is working!");
         }
 
+        [Safe]
+        [Authorize(UserRole.Guest)]
+        [RateLimiter(100,1)]
         [HttpOptions("")]
-        protected override void OptionsHandle(HttpRequest request, HttpsSession session)
+        protected override void OptionsHandle([Data] HttpRequest request, [Session] HttpsSession session)
         {
             OkHandle(session, "API is working!");
         }
