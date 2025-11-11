@@ -1,4 +1,5 @@
-﻿using LuciferCore.Event;
+﻿using LuciferCore.Attributes;
+using LuciferCore.Event;
 using LuciferCore.Manager.Log;
 using LuciferCore.NetCoreServer;
 using System.Net.Sockets;
@@ -6,6 +7,7 @@ using static LuciferCore.Core.Simulation;
 
 namespace Yourspace.Session
 {
+    [RateLimiter(5, 2)]
     public partial class NewWssSession : WssSession
     {
         // Trong NewWssSession.cs
