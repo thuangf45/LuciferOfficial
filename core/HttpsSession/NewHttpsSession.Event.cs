@@ -1,5 +1,5 @@
 ﻿using LuciferCore.Attributes;
-using LuciferCore.Event;
+using LuciferCore.Event.Dispatcher;
 using LuciferCore.Manager.Log;
 using LuciferCore.NetCoreServer;
 using System.Net.Sockets;
@@ -26,9 +26,7 @@ namespace Yourspace.Session
         }
 
         protected override void OnReceivedRequest(HttpRequest request)
-        {
-            EventDispatcher.Handle(request, this);
-        }
+            => EventDispatcher.Handle(request, this);
 
         protected override void OnReceivedRequestError(HttpRequest request, string error)    
             => GetModel<LogManager>().LogSystem(this,$"Request error: {error}", LogLevel.ERROR);

@@ -1,11 +1,7 @@
 ﻿using LuciferCore.Attributes;
-using LuciferCore.Handler;
-using LuciferCore.Manager.Log;
-using System.Text;
-using Yourspace.Server;
-using Yourspace.Session;
-using static LuciferCore.Core.Simulation;
 using LuciferCore.Extensions;
+using LuciferCore.Handler.Wss;
+using Yourspace.Session;
 
 namespace Yourspace.Handler
 {
@@ -18,9 +14,8 @@ namespace Yourspace.Handler
         [RateLimiter(10,1)]
         public void SendChat([Session] NewWssSession session, [Data] WsPacketModel data)
         {
-            string msg = Encoding.UTF8.GetString(data.Body.Span);
-            GetModel<LogManager>().LogSystem(this, $"Guest: {msg}");
-
+            //string msg = Encoding.UTF8.GetString(data.Body.Span);
+            //GetModel<LogManager>().LogSystem(this, $"Guest: {msg}");
             session.Multicast(data, session.GetGroup(data.Header.To));
         }
 

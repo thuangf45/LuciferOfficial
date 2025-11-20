@@ -1,5 +1,5 @@
 ﻿using LuciferCore.Attributes;
-using LuciferCore.Event;
+using LuciferCore.Event.Dispatcher;
 using LuciferCore.Manager.Log;
 using LuciferCore.NetCoreServer;
 using System.Net.Sockets;
@@ -13,6 +13,12 @@ namespace Yourspace.Session
         // Trong NewWssSession.cs
         public override void OnWsReceived(byte[] buffer, long offset, long size)
             =>  EventDispatcher.Handle(this, buffer, offset, size);
+
+        protected override void OnReceivedRequest(HttpRequest request)
+        { 
+            if (!IsWebSocket)
+                EventDispatcher.Handle(request, this); 
+        }
 
         protected override void OnReceivedRequestInternal(HttpRequest request)
         {

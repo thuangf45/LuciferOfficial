@@ -10,7 +10,7 @@ namespace Yourspace.Server
         private static SslContext CreateSslContext()
         {
             string certPath = EnvHelper.Get("CERTIFICATE", "assets/tools/certificates/server.pfx");
-            string password = EnvHelper.Get("CERT_PASSWORD", "qwerty");
+            string password = EnvHelper.Get("CERT_PASSWORD", "RootCA!SecureKey@Example2025Strong");
 
             return new SslContext(SslProtocols.Tls13, new X509Certificate2(certPath, password));
         }
