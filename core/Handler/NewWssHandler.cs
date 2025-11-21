@@ -1,6 +1,8 @@
 ﻿using LuciferCore.Attributes;
+using LuciferCore.Database;
 using LuciferCore.Extensions;
 using LuciferCore.Handler.Wss;
+using Test.core.Entities;
 using Yourspace.Session;
 
 namespace Yourspace.Handler
@@ -14,8 +16,10 @@ namespace Yourspace.Handler
         [RateLimiter(10,1)]
         public void SendChat([Session] NewWssSession session, [Data] WsPacketModel data)
         {
-            //string msg = Encoding.UTF8.GetString(data.Body.Span);
-            //GetModel<LogManager>().LogSystem(this, $"Guest: {msg}");
+            var accounts = DB.GetTable<Account>();
+
+            //Console.WriteLine("Số lượng account: " + accounts.ToList().Count);
+
             session.Multicast(data, session.GetGroup(data.Header.To));
         }
 
