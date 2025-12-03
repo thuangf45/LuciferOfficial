@@ -22,6 +22,16 @@ namespace Yourspace.Session
 
         protected override void OnReceivedRequestInternal(HttpRequest request)
         {
+            if (!IsWebSocket)
+            {
+                // 1️⃣ Nếu là API thì bỏ qua static file, chuyển thẳng sang EventDispatcher
+                if (request.Url.StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
+                {
+                    OnReceivedRequest(request); // sẽ gọi EventDispatcher.Handle(request, this)
+                    return;
+                }
+            }
+
             if (request.Method == "GET" && !IsWebSocket)
             {
                 var staticPath = GetStaticPath(request);
@@ -36,7 +46,9 @@ namespace Yourspace.Session
         }
 
         public override void OnWsConnected(HttpRequest request)
-            => SendTextAsync("Hello from WebSocket chat! Please send a message or '!' to disconnect the client!");
+        {
+
+        }
         
 
         public override void OnWsDisconnected() 

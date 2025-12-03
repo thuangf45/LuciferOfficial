@@ -16,6 +16,7 @@ namespace Yourspace.Session
             {
                 { "/","/index.html" },
                 { "/404", "/404.html" },
+                { "/home", "/home.html" },
                 { "/entertainment", "/entertainment.html" },
                 { "/forum", "/forum.html" },
                 { "/journal", "/journal.html" },

@@ -3,6 +3,7 @@ using LuciferCore.Event.Dispatcher;
 using LuciferCore.Manager.Log;
 using LuciferCore.NetCoreServer;
 using System.Net.Sockets;
+using System.Net.WebSockets;
 using static LuciferCore.Core.Simulation;
 
 namespace Yourspace.Session
@@ -12,6 +13,12 @@ namespace Yourspace.Session
     {
         protected override void OnReceivedRequestInternal(HttpRequest request)
         {
+            // 1️⃣ Nếu là API thì bỏ qua static file, chuyển thẳng sang EventDispatcher
+            if (request.Url.StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
+            {
+                OnReceivedRequest(request); // sẽ gọi EventDispatcher.Handle(request, this)
+                return;
+            }
             if (request.Method == "GET")
             {
                 var staticPath = GetStaticPath(request);
