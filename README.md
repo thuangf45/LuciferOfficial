@@ -17,7 +17,7 @@ dotnet add package LuciferCore
 For a specific version (e.g., for server fine-tuning):
 
 ```bash
-dotnet add package LuciferCore --version 1.0.9
+dotnet add package LuciferCore --version 1.2.9
 ```
 
 After installation, run `dotnet restore` to ensure all dependencies are loaded properly.
